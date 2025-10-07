@@ -44,6 +44,7 @@ jobs:
     needs: build
     #if pull request merged then only this job will run
     #if: github.ref == 'refs/heads/main'  && github.event.pull_request.merged
+    runs-on: ubuntu-latest
     uses: mr-smithers-excellent/docker-build-push@v4
     with:
       image: sayanhub1996/springboot-app
