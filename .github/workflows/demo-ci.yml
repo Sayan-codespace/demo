@@ -22,6 +22,15 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Run Junit tests
       run:  mvn test 
+    - name: Build and push to DockerHub
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: sayanhub1996/springboot-app
+        tag: latest
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+  
     
 
   demo:
@@ -34,18 +43,18 @@ jobs:
       run: echo "Hi!! " ${{ vars.DEFAULT_MESSAGE }} 
 
 
-  docker-push:
-    needs: build
-    #if pull request merged then only this job will run
-    if: github.event.action == 'closed' && github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build and push to DockerHub
-      uses: mr-smithers-excellent/docker-build-push@v4
-      with:
-        image: sayanhub1996/springboot-app
-        tag: latest
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+  # docker-push:
+  #   needs: build
+  #   #if pull request merged then only this job will run
+  #   if: github.event.action == 'closed' && github.event.pull_request.merged == true
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Build and push to DockerHub
+  #     uses: mr-smithers-excellent/docker-build-push@v4
+  #     with:
+  #       image: sayanhub1996/springboot-app
+  #       tag: latest
+  #       registry: docker.io
+  #       username: ${{ secrets.DOCKER_USERNAME }}
+  #       password: ${{ secrets.DOCKER_PASSWORD }}
 
