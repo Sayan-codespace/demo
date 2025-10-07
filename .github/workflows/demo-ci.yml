@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+    types: [ opened, reopened, synchronize, closed ]
 
 jobs:
   build:
@@ -26,7 +27,7 @@ jobs:
   demo:
     needs: build
     #if pull request merged then only this job will run
-    if: github.ref == 'refs/heads/master'  && github.event.pull_request.merged
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     - name: Dummty step
@@ -36,7 +37,7 @@ jobs:
   docker-push:
     needs: build
     #if pull request merged then only this job will run
-    if: github.ref == 'refs/heads/master'  && github.event.pull_request.merged
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     - name: Build and push to DockerHub
